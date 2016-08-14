@@ -1,0 +1,27 @@
+{
+  "name": "react-native-list-view-util",
+  "version": "0.0.1",
+  "description": "Utility functions for the 'ListView' component of React Native.",
+  "main": "src/ReactNativeListViewUtil.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/xhrix/react-native-list-view-util.git"
+  },
+  "keywords": [
+    "react",
+    "native",
+    "ListView"
+  ],
+  "author": "xhrix <xxxhrixxx@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xhrix/react-native-list-view-util/issues"
+  },
+  "homepage": "https://github.com/xhrix/react-native-list-view-util#readme",
+  "dependencies": {
+    "linqjs": "0.0.6"
+  }
+}
