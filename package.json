@@ -22,6 +22,6 @@
   },
   "homepage": "https://github.com/xhrix/react-native-list-view-util#readme",
   "dependencies": {
-    "linqjs": "0.0.6"
+    "linqts": "^1.6.0"
   }
 }
