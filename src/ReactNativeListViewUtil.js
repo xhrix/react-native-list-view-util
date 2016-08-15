@@ -16,16 +16,20 @@ export default class ReactNativeListViewUtil {
     /**
      * Formats and returns a 'dataBlob', 'sectionIDs', and 'rowIDs' used to build a 'ListView' with sticky headers.
      *
-     * @param ungroupedData An array of data of a type to fill the columns.
-     * @param sectionDataSelector Function to select what data to use as the section data.
-     * @param sectionDataComparer FUnction to compare the header data and determine if it's other header.
-     * @param rowDataSelector Function to select what data to use as the row data.
+     * @param dataCollection Array of data of a type used to fill the list view.
+     * @param getSectionData Function to select what data to use as the section data.
+     * @param getRowData Function to select what data to use as the row data.
+     * @param grouper Function to group the elements of 'dataCollection'.
+     * @param comparer (optional) Function to compare the grouping data.
      * @return {{dataBlob: {}, sectionIDs: Array, rowIDs: Array}}
      */
-    static getDataBlobSectionIDsAndRowIDs<T, TSection, TRow>(ungroupedData: T[],
-                                                             sectionDataSelector: (entry: T) => TSection,
-                                                             sectionDataComparer: (a: TSection, b: TSection) => boolean,
-                                                             rowDataSelector: (entry: T) => TRow,) {
+    static getDataBlobSectionIDsAndRowIDs<T, TGrouping, TSectionData, TRowData>(
+        dataCollection: T[],
+        getSectionData: (entry: T) => TSectionData,
+        getRowData: (entry: T) => TRowData,
+        grouper: (entry: T) => TGrouping,
+        comparer: (a: TGrouping, b: TGrouping) => boolean = null
+    ) {
 
         /**
          * Object containing the contents for all the sections and rows, identified by an id.
@@ -48,7 +52,7 @@ export default class ReactNativeListViewUtil {
         var rowIDs = [];
 
         // First lets group the data so we can get the 'sticky headers' (or sections).
-        let groupedData = ungroupedData.groupBy(sectionDataSelector, sectionDataComparer);
+        let groupedData = dataCollection.groupBy(grouper, comparer);
 
         var groupIndex = -1;
 
@@ -63,8 +67,8 @@ export default class ReactNativeListViewUtil {
             rowIDs[groupIndex] = [];
 
             // Update the data blob with the sticky header (or section) content.
-            // All the guys of the group will return the same value when calling 'sectionDataSelector'. Pck the first one.
-            dataBlob[groupIndex] = sectionDataSelector(group[0]);
+            // All the guys of the group will return the same value when calling 'getSectionData'. Pck the first one.
+            dataBlob[groupIndex] = getSectionData(group[0]);
 
             var entryIndex = -1;
 
@@ -80,7 +84,7 @@ export default class ReactNativeListViewUtil {
                 rowIDs[groupIndex].push(rowID);
 
                 // Update the data blog with the row's content.
-                dataBlob[rowID] = rowDataSelector(entry);
+                dataBlob[rowID] = getRowData(entry);
             }
         }
         return {dataBlob: dataBlob, sectionIDs: sectionIDs, rowIDs: rowIDs};
